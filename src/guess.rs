@@ -1,33 +1,51 @@
-// Container for Guess struct and related methods
-
+pub mod guess_functions;
 
 pub mod guess {
-    #[derive(PartialOrd, PartialEq)]
+
+    use std::io;
+    pub use crate::guess::guess_functions;
+
+    #[derive(PartialOrd, PartialEq, Clone)]
 
     pub struct Guess {
         pub number: String,
-    }
-
-    impl std::fmt::Display for Guess {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "{}", self)
-          }
+        pub rand_num: i32,
     }
 
     impl Guess {
-        // method to ensure that the user provided a number and that number falls within the specified range
-        pub fn validate_guess(&self) -> bool {
-            // check to ensure that the user input is a number (adapted from https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
-            let user_number = self.number.trim();
-            match user_number.parse::<i32>() {
-                Ok(i) => if i > 100 || i < 1 {
-                            false
-                        } else {
-                            true
-                        }
-                Err(..) => { println!("this was not an integer: {}", user_number);
-                            false }
-            }
+
+        pub fn ask_guess() -> Guess {
+            let mut user_guess: Guess = Guess {
+                                        number: String::new(),
+                                        rand_num: 0,
+                                        };
+            let mut guessing = true;
+            while guessing == true {
+                let mut user_input: String = String::new();
+                io::stdin()
+                    .read_line(&mut user_input)
+                    .expect("Invalid input, please re-enter.");
+
+                let random_number = guess_functions::guess_functions::gen_rand_num();
+                println!("{}", random_number);
+                    
+                let valid_guess = guess_functions::guess_functions::validate_guess(user_input.trim().to_string());
+
+                if valid_guess == true {
+                    user_guess = Guess {
+                        number: user_input,
+                        rand_num: random_number,
+                    };
+                    guessing = false;
+                } else {
+                    user_guess = Guess {
+                        number: user_input,
+                        rand_num: random_number,
+                    };
+                    guessing = true;
+                };
+            };
+        user_guess
         }
     }
 }
