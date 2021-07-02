@@ -1,10 +1,11 @@
 // Container for Guess struct and related methods
 
+
 pub mod guess {
     #[derive(PartialOrd, PartialEq)]
 
     pub struct Guess {
-        pub number: i32,
+        pub number: String,
     }
 
     impl std::fmt::Display for Guess {
@@ -14,14 +15,18 @@ pub mod guess {
     }
 
     impl Guess {
-        // method to ensure that the user provided number falls within the specified range
+        // method to ensure that the user provided a number and that number falls within the specified range
         pub fn validate_guess(&self) -> bool {
-            if self.number > 100 {
-                false
-            } else if self.number < 1 {
-                false
-            } else {
-                true
+            // check to ensure that the user input is a number (adapted from https://stackoverflow.com/questions/30355185/how-to-read-an-integer-input-from-the-user-in-rust-1-0)
+            let user_number = self.number.trim();
+            match user_number.parse::<i32>() {
+                Ok(i) => if i > 100 || i < 1 {
+                            false
+                        } else {
+                            true
+                        }
+                Err(..) => { println!("this was not an integer: {}", user_number);
+                            false }
             }
         }
     }

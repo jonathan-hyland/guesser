@@ -5,7 +5,7 @@ fn main() {
     println!("Welcome to the Guesser!");
     println!("Type in your guess, which should be a number from 1 to 100.");
 
-    let user_input = 101;
+    let user_input: String = "101".to_string();
 
     let user_guess = Guess {
         number: user_input,
