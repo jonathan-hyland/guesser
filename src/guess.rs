@@ -2,10 +2,9 @@ pub mod guess_functions;
 
 pub mod guess {
 
-    use std::io;
     pub use crate::guess::guess_functions;
 
-    #[derive(PartialOrd, PartialEq, Clone)]
+    #[derive(PartialOrd, PartialEq)]
 
     pub struct Guess {
         pub number: String,
@@ -14,38 +13,31 @@ pub mod guess {
 
     impl Guess {
 
-        pub fn ask_guess() -> Guess {
-            let mut user_guess: Guess = Guess {
-                                        number: String::new(),
-                                        rand_num: 0,
-                                        };
+        pub fn new_guess() {
+            let mut user_guess: Guess;  
             let mut guessing = true;
-            while guessing == true {
-                let mut user_input: String = String::new();
-                io::stdin()
-                    .read_line(&mut user_input)
-                    .expect("Invalid input, please re-enter.");
+            let random_number = guess_functions::guess_functions::gen_rand_num();
 
-                let random_number = guess_functions::guess_functions::gen_rand_num();
-                println!("{}", random_number);
-                    
-                let valid_guess = guess_functions::guess_functions::validate_guess(user_input.trim().to_string());
+            while guessing == true {
+                let user_input = guess_functions::guess_functions::ask_guess();
+                let valid_guess = guess_functions::guess_functions::validate_guess(user_input.to_string());
 
                 if valid_guess == true {
                     user_guess = Guess {
                         number: user_input,
                         rand_num: random_number,
                     };
-                    guessing = false;
+                        if user_guess.number.trim().parse::<i32>() == Ok(user_guess.rand_num) {
+                            println!("Your guess was correct!");
+                            guessing = false;
+                        } else {
+                            println!("Wrong guess. Guess again!");
+                            guessing = true;
+                        }
                 } else {
-                    user_guess = Guess {
-                        number: user_input,
-                        rand_num: random_number,
-                    };
                     guessing = true;
                 };
             };
-        user_guess
         }
     }
 }
