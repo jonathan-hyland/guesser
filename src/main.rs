@@ -1,11 +1,15 @@
 mod guess;
 use crate::guess::guess::Guess;
+use std::io;
 
 fn main() {
     println!("Welcome to the Guesser!");
     println!("Type in your guess, which should be a number from 1 to 100.");
 
-    let user_input: String = "101".to_string();
+    let mut user_input: String = String::new();
+    io::stdin()
+        .read_line(&mut user_input)
+        .expect("Invalid input, please re-enter.");
 
     let user_guess = Guess {
         number: user_input,
