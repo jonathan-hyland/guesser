@@ -1,4 +1,4 @@
-mod guess;
+use guess::Guess;
 use std::io;
 
 fn main() {
@@ -8,7 +8,7 @@ fn main() {
         println!("Welcome to the Guesser!");
         println!("Type in your guess, which should be a number from 1 to 100.");
         
-        let guessing_game = guess::guess::Guess::new_guess();
+        let guessing_game = Guess::new_guess();
 
         if guessing_game == true {
             let mut new_game = String::new();

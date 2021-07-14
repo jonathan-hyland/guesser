@@ -1,8 +1,6 @@
-pub mod guess_functions;
+pub use guess_functions;
 
 pub mod guess {
-
-    pub use crate::guess::guess_functions;
 
     #[derive(PartialOrd, PartialEq)]
 
